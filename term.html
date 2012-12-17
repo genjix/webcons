@@ -1,0 +1,40 @@
+<script src="jquery.js"></script>
+<script src="socket.io.js"></script>
+
+<code>
+    <div id="output">
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+</code>
+<form id="prompt">
+    <input type="text" />
+    <input type="submit" value=">" />
+</form>
+
+<script>
+var socket = io.connect('http://localhost:8080/term');
+socket.on('update', function (data) {
+    $('#output').find('p:first-child').remove();
+    $('#output').append('<p>' + data['line'] + '</p>');
+});
+$('#prompt').submit(function() {
+    socket.emit('code', { line: $('input:first').val() });
+    $('input:first').val('');
+    return false;
+});
+</script>
+
